@@ -37,14 +37,22 @@ const userSchema = mongoose.Schema({
         type: String,
         validate(value){
             if(!["Male", "Female", "Gay", "Bisexual"].includes(value)){
-                throw new Error("Gender data [ "+ value + " ] is not valid")
+                throw new Error("Invalid Gender Value: " + value)
             }
         }
     },
-    skills: [String]
+    skills: {
+        type: [String],
+        default: undefined,                 //Removes Empty Array from DB
+        validate(value){
+            if(value.length > 3){
+                throw new Error("Skills limit reached of 3: " + value.length)
+            }
+        }
+    },
 },
-{timestamps: true})
-
+// {timestamps: true}
+)
 
 //Token Creation
 userSchema.methods.getJWT = async function (){
@@ -54,6 +62,5 @@ userSchema.methods.getJWT = async function (){
 
     return token
 }
-
 
 module.exports = mongoose.model("User", userSchema)

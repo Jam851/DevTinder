@@ -1,4 +1,3 @@
-const user = require("../models/user")
 const User = require("../models/user")
 const jwt = require("jsonwebtoken")
 
@@ -18,6 +17,7 @@ const userAuth = async (req, res, next) => {
         if(!user){
             throw new Error("UserId does not exist in DB")
         } 
+        
         req.user = user
 
         next()
